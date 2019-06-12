@@ -192,9 +192,9 @@ background-color: rgb(235,109,6);
     height: 80px;
 
 }
-
-/*####################################################################*/
-@media (max-width: 123px) { /* Remplacez 123px par la taille de votre choix */
+/*
+/*####################################################################
+@media (max-width: 123px) { /* Remplacez 123px par la taille de votre choix 
     .navbar-header {
     float: none;
     }
@@ -223,7 +223,7 @@ background-color: rgb(235,109,6);
     float: none;
     margin: 15px 0;
     }
-    /* cette classe est à ajouter lorsque que vous utilisez une version de Bootstap supérieure ou égale à la 3.1.0 */
+    /* cette classe est à ajouter lorsque que vous utilisez une version de Bootstap supérieure ou égale à la 3.1.0 
     .navbar-collapse.collapse.in {
     display: block!important;
     }
@@ -231,3 +231,5 @@ background-color: rgb(235,109,6);
     overflow: hidden!important;
     }
     }
+
+    */
