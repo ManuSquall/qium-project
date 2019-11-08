@@ -12,4 +12,4 @@ This is the 4 pics 1 word game coded entirely in js with node.js technology and 
 * then go to your browser and enter the right url: "localhost:47" (47 in my case, if you have change your port number your url have to be different)
 * if you want to stop the app just type "ctrl + c" in the command line
 
-Squall ☺
+Squall!! 😁
