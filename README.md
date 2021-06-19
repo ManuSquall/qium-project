@@ -1,9 +1,21 @@
+<!-- Repository git : https://github.com/ManuSquall/QIUM-project -->
 # Quatre Images Un Mot project
+
+<!-- Description -->
+![output4](/readme/output4.png)
 
 This is the 4 pics 1 word game coded entirely in js with node.js technology and ejs as view engine.
 
-## How does it work
+## Context
+<!-- Why am i making this -->
 
+## Tools used
+<!-- Packages, external librairies, IDE, utilitaries used -->
+* [VS Code](https://code.visualstudio.com/)
+
+
+## How does it work
+<!-- What we have to do to make it work/run -->
 * i personnaly use the port 47 for my app, you can obviously change it if you want
 * the "sql database" folder contains the data (😅), all you need is to import it into a "qimgumot" database already created by you (i used wamp to manage it)
 * Node.js, of course have to be installed
@@ -12,4 +24,36 @@ This is the 4 pics 1 word game coded entirely in js with node.js technology and 
 * then go to your browser and enter the right url: "localhost:47" (47 in my case, if you have change your port number your url have to be different)
 * if you want to stop the app just type "ctrl + c" in the command line
 
-Squall!! 😁
+## Output:
+
+<!-- What the result is supposed to be -->
+
+![output1](/readme/output1.png)
+
+![output2](/readme/output2.png)
+
+![output3](/readme/output3.png)
+
+![output4](/readme/output4.png)
+
+![output5](/readme/output5.png)
+
+
+## About Authors / Contributors
+
+[ManuSquall](https://manusquall.azurewebsites.net/)
+
+## License
+
+This project is licensed under the [CC0 1.0 Universal](https://creativecommons.org/) Creative Commons License.
+
+
+## Acknowledgments
+
+<!-- inspiration, research stuff -->
+* https://nodejs.org/en/
+* https://expressjs.com/fr/
+*
+
+
+# Made with purple 💜 lust :-)
