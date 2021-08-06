@@ -1,70 +1,59 @@
-# Getting Started with Create React App
+<!-- Repository git : https://github.com/ManuSquall/QIUM-project -->
+# Quatre Images Un Mot project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<!-- Description -->
+![output4](/readme/output4.png)
 
-## Available Scripts
+This is the 4 pics 1 word game coded entirely in js with node.js technology and ejs as view engine.
 
-In the project directory, you can run:
+## Context
+<!-- Why am i making this -->
 
-### `yarn start`
+## Tools used
+<!-- Packages, external librairies, IDE, utilitaries used -->
+* [VS Code](https://code.visualstudio.com/)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## How does it work
+<!-- What we have to do to make it work/run -->
+* i personnaly use the port 47 for my app, you can obviously change it if you want
+* the "sql database" folder contains the data (😅), all you need is to import it into a "qimgumot" database already created by you (i used wamp to manage it)
+* Node.js, of course have to be installed
+* the project include already the nodes modules required
+* just have to be in the project directory and the "node app.js" command should run the app
+* then go to your browser and enter the right url: "localhost:47" (47 in my case, if you have change your port number your url have to be different)
+* if you want to stop the app just type "ctrl + c" in the command line
 
-### `yarn test`
+## Output:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<!-- What the result is supposed to be -->
 
-### `yarn build`
+![output1](/readme/output1.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![output2](/readme/output2.png)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![output3](/readme/output3.png)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![output4](/readme/output4.png)
 
-### `yarn eject`
+![output5](/readme/output5.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## About Authors / Contributors
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+[ManuSquall](https://manusquall.azurewebsites.net/)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## License
 
-## Learn More
+This project is licensed under the [CC0 1.0 Universal](https://creativecommons.org/) Creative Commons License.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Acknowledgments
 
-### Code Splitting
+<!-- inspiration, research stuff -->
+* https://nodejs.org/en/
+* https://expressjs.com/fr/
+*
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Made with purple 💜 lust :-)
