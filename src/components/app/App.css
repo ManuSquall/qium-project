@@ -1,0 +1,202 @@
+.App {
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* style from initial project */
+
+
+/* ################################################### */
+/* navigation bar */
+/* ################################################### */
+.logo{
+  display: inline-block;
+  vertical-align: top;
+  width: 50px;
+  height: 50px;
+  margin-right: 20px;
+  margin-left: 30%;
+  margin-top: 10px;
+}
+
+.navigation-bar{
+  width:50%;
+  margin-left: 25%;
+  height: 70px;
+background-color: rgb(235,109,6);
+}
+.navigation-bar > h3{
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 20px;
+  height: 80px;
+}
+/* ################################################### */
+
+#Exo2{
+  color:#fff;
+  background-color:rgb(235, 109, 6);
+  border-color:rgb(235, 109, 6);
+  width: 30%;
+  height: 40px;
+  
+  }
+  #Exo2:hover{
+      color:#fff;
+      background-color: rgb(235, 109, 6);
+      border-color: rgb(235, 109, 6);
+  }
+  #Exo2:focus{
+      box-shadow:0 0 0 .2rem rgb(235, 109, 6)}
+  
+  
+  .container{
+  background-color: transparent;
+  margin-left: 5%;
+  margin-right: 5%;
+  height: 100%;
+  }
+  .exam1{
+  text-align: center;
+  }
+  .jeu{
+  margin: 0 auto;
+  width: 350px;
+  background-color: #23293E;
+  /* border-radius: 25px; */
+  border: 500px, double, rgb(235, 109, 6);
+  }
+  .niveau{
+  background-color: rgb(235, 109, 6);
+  padding: 3%;
+  border-radius: 50%;
+  }
+  .divNiveau{
+  width: 350px;
+  background-color: #23293E;
+  text-align: center;
+  padding: 20px 0px;
+  }
+  .img{
+  border-radius: 20%;
+  border: 1px solid grey;
+  text-align: center;
+  margin: 0 auto;
+  background-color: white;
+  }
+  div table tr td{
+  width: 175px; 
+  text-align: center;
+  }
+  .btn{
+  width: 15%;
+  font-family: monospace;
+  font-size: 30px;
+  text-align: center;
+  margin: 0 0 5px 0;
+  padding: 0;
+  border-radius: 10%;
+  box-shadow: 0  1px grey;
+  }
+  .btn:hover{
+  opacity: 0.6;
+  background-color: red;
+  }
+  .btn-group{
+  text-align: center;
+  }
+  .lettre{
+  width: 10%;
+  font-family: monospace;
+  font-size: 20px;
+  text-align: center;
+  margin: 0 0 5px 0;
+  padding: 0;
+  color: white;
+  background-color: black;
+  border-radius: 10%;
+  }
+  .divLettre{
+  padding: 20px;
+  }
+  .btnRset{
+  color: red;
+  text-decoration: none;
+  border:2px solid red;
+  }
+  .removeBtn{
+  opacity: 0;
+  
+  width: 15%;
+  font-family: monospace;
+  font-size: 30px;
+  text-align: center;
+  margin: 0 0 5px 0;
+  padding: 0;
+  border-radius: 10%;
+  box-shadow: 0  1px grey;
+  }
+  .removeLettre{
+  opacity: 0;
+  
+  width: 10%;
+  font-family: monospace;
+  font-size: 20px;
+  text-align: center;
+  margin: 0 0 5px 0;
+  padding: 0;
+  color: white;
+  background-color: black;
+  border-radius: 10%;
+  }
+  .btnSuiv{
+  width: 95%;
+  font-family: monospace;
+  font-size: 30px;
+  text-align: center;
+  background-color: lime;
+  margin: 0 0 5px 0;
+  padding: 6%;
+  border-radius: 10%;
+  box-shadow: 0  1px grey;
+  }
+  
+  
+  #squall{
+      align-items: center;
+      color: #0062cc;
+  }
+  
+  #squall > div{
+      background-color: purple;
+      align-content: center;
+  }
