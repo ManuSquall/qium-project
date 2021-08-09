@@ -4,13 +4,6 @@ import Logo from './../../assets/raw.jpg'
 import ImgSoluce from './../../assets/_1_1.jpg'
 
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-function displayButton(props){
-    return Array.from(props).map((lettre, index) => {
-        return (<button className="lettre" id={"lettre" + (index+1)} disabled="disabled">_</button>);
-    })
-}
-
 class DivLettre extends React.Component {
 
     displayButton(a){
@@ -28,20 +21,36 @@ class DivLettre extends React.Component {
     );
     }
 }
+class BtnLettre extends React.Component {
+
+    
+
+    render(){
+        return (
+        <div id="btnLettre">
+            {this.displayButton(this.props.nbrRep)
+            }
+        </div>
+    );
+    }
+}
 class App extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             level : 1,
-            solution : "feu"
+            solution : "feu",
+            numberOfButton: 12
         }
     }
+
+    const [level, setLevel ] = useState(0);
 
 
 
     render(){
         return (
-            <div>
+            <>
             <nav className="navigation-bar" >
                 <img className="logo" src={Logo} alt=""/>;
                 <h3>Quatre Images Un Mot</h3>
@@ -99,7 +108,9 @@ class App extends React.Component{
                         <button type="button" value="" id="12" className="btn">_</button>
                     </div>
                 </div>
-        
+
+                
+               
                 
                 
             
@@ -115,7 +126,7 @@ class App extends React.Component{
     </div>
     
     </div>
-    </div>
+    </>
   
         );
     }
