@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import Logo from './../../assets/raw.jpg'
 import ImgSoluce from './../../assets/_1_1.jpg'
 
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const NBRBUTTON = 12;
+let POSITION = [];
 class DivLettre extends React.Component {
 
-    displayButton(a){
-        return Array.from(a).map((lettre, index) => {
-            return (<button className="lettre" id={"lettre" + (index+1)} disabled="disabled">_</button>);
+    displayButton(number){
+        return Array.from(Array(number), (notUsed, index) => {
+            return <BtnLettreButton id={"lettre" + (index+1)} key={index} class="lettre"/>;
         })
     }
 
@@ -21,119 +23,167 @@ class DivLettre extends React.Component {
     );
     }
 }
-class BtnLettre extends React.Component {
 
-    
-
-    render(){
-        return (
-        <div id="btnLettre">
-            {this.displayButton(this.props.nbrRep)
-            }
+function NavBar(props) {
+    return (
+    <nav className="navigation-bar" >
+        <img className="logo" src={Logo} alt=""/>;
+        <h3>Quatre Images Un Mot</h3>
+        <div className="divNiveau" >
+            <span className="niveau">{props.level}</span>
         </div>
-    );
+    </nav>
+    )
+}
+
+function BtnLettre(props){
+
+    function fillWithSolutionWord(solution) {
+        let cpt = solution.length;
+        for (let i = 0; i < solution.length; i++) {
+            let randomPosition = (""+Math.ceil(Math.random()*(12-1)+1));
+            let btnElement = document.getElementById(randomPosition);
+            if(btnElement.textContent === "_"){
+                btnElement.textContent=props.solution[(cpt-1)];
+                cpt--;
+            }
+            else{
+                i--;
+            }
+        }
     }
+
+    function fillWithRandomWord() {
+        for (let i = 0; i < NBRBUTTON; i++) {
+            var btnElement = document.getElementById((""+(i+1)));
+            if(btnElement.textContent==="_"){
+                let randomNumber = (""+Math.ceil(Math.random()*(25)));
+                btnElement.textContent=ALPHABET[randomNumber];     
+            }
+        }
+    }
+
+    // fill the propositions buttons with solution words
+    useEffect(()=>{
+        fillWithSolutionWord(props.solution);        
+    });
+    
+    // fill the propositions buttons with random words
+    useEffect(()=>{
+        fillWithRandomWord(props.solution);        
+    });
+
+        return ( 
+            <div id="btnLettre">
+            {Array.from(Array(NBRBUTTON), (notUsed, i)=>{
+                return <BtnGroupButton id={i} key={i} class="btn" solution={props.solution}/>;
+                })}
+            </div>
+        );
+}
+
+function BtnLettreButton(props) {
+
+
+    const [value, setValue] = React.useState("_");
+    const [disabledAttribute, setDisabledAttribute] = React.useState("disabled");
+
+    function handleClick(params) {
+        for (let j = 0; j < NBRBUTTON; j++) {
+            
+            if(POSITION[props.id]===j){
+                document.getElementById((""+(j+1))).removeAttribute("disabled");
+                setDisabledAttribute("");
+                setValue("_");
+                // cpt--;
+            }
+        }
+    }
+
+    return (
+        <button type="button" value="" id={props.id} key={props.id} className={props.class} disabled={disabledAttribute} >{value}</button>
+    );
+}
+
+function ImgSolutions(props) {
+    return (<img id={"img" + props.id} className="img" src={props.ImgSoluce}  alt=""/>);
+}
+
+function Images(props) {
+    return (
+            <table>
+                <tbody>
+                    <tr>
+                        <td><ImgSolutions id="1" ImgSoluce={ImgSoluce} /></td>
+                        <td><ImgSolutions id="2" ImgSoluce={ImgSoluce} /></td>
+                    </tr>
+                    <tr>
+                        <td><ImgSolutions id="3" ImgSoluce={ImgSoluce} /></td>
+                        <td><ImgSolutions id="4" ImgSoluce={ImgSoluce} /></td>
+                    </tr>
+                </tbody>
+            </table>
+    );
+}
+
+function BtnGroupButton(props) {
+
+    const [value, setValue] = React.useState("_");
+    const [disabledAttribute, setDisabledAttribute] = React.useState("");
+
+    function handleClick() {
+        for (let j = 0; j < props.solution.length; j++) {
+            
+            if(document.getElementById(("lettre"+(j+1))).getAttribute("disabled")===""){
+
+                document.getElementById(("lettre"+(j+1))).textContent=value;
+                POSITION[j]=props.id;
+                document.getElementById(("lettre"+(j+1))).removeAttribute("disabled");
+
+
+                // this.setAttribute("disabled","");
+                setDisabledAttribute("");
+                // cpt++;
+                break;
+            }
+            
+        }
+    }
+
+    return (
+        <button type="button" value="" id={props.id+1} className={props.class} onClick={handleClick} disabled={disabledAttribute} >{value}</button>
+    );
+}
+
+function Button(props) {
+    return (<button type="button" value="" id={props.id} className={props.class}>{props.value}</button>);
 }
 class App extends React.Component{
+
     constructor(props){
         super(props);
         this.state = {
             level : 1,
-            solution : "feu",
-            numberOfButton: 12
+            solution : "FEU"
         }
     }
-
-    const [level, setLevel ] = useState(0);
-
-
 
     render(){
         return (
             <>
-            <nav className="navigation-bar" >
-                <img className="logo" src={Logo} alt=""/>;
-                <h3>Quatre Images Un Mot</h3>
-            </nav>
-    <div className="container">
-        <div className="exam1">
-            <div className="jeu">
-            
-            
-                
-                <div>
-                    <div className="divNiveau" ><span className="niveau">{this.state.level}</span></div>
-                    
-
+                <div className="container">
+                    <NavBar level={this.state.level}/>
                     <hr/>
-                    
-                    <div className="image">
-                        <table>
-                        <tbody>
-                            <tr>
-                                <td><img id="img1" className="img" src={ImgSoluce}  alt=""/></td>
-                                <td><img id="img2" className="img" src={ImgSoluce}  alt=""/></td>
-                            </tr>
-                            <tr>
-                                <td><img id="img3" className="img" src={ImgSoluce}  alt=""/></td>
-                                <td><img id="img4" className="img" src={ImgSoluce}  alt=""/></td>
-                            </tr>
-                        </tbody>
-                        </table>
-                    </div>
+                    <Images/>
+                    <hr/>
+                    <DivLettre nbrRep={this.state.solution.length} />
+                    <BtnLettre solution={this.state.solution}/>
+                    <br/>
+                    <Button id="Exo2" value="VALIDER"/>
                 </div>
-
-                <hr/>
-                
-                
-                
-                <DivLettre nbrRep={this.state.solution} />
-
-
-                <div id="btnLettre">
-                    <div className="btn-group">
-                        <button type="button" value="" id="1" className="btn">_</button>
-                        <button type="button" value="" id="2" className="btn">_</button>
-                        <button type="button" value="" id="3" className="btn">_</button>
-                        <button type="button" value="" id="4" className="btn">_</button>
-                        <button type="button" value="" id="5" className="btn">_</button>
-                        <button type="button" value="" id="6" className="btn">_</button>
-                    </div>
-                    <div className="btn-group">
-                        <button type="button" value="" id="7" className="btn">_</button>
-                        <button type="button" value="" id="8" className="btn">_</button>
-                        <button type="button" value="" id="9" className="btn">_</button>
-                        <button type="button" value="" id="10" className="btn">_</button>
-                        <button type="button" value="" id="11" className="btn">_</button>
-                        <button type="button" value="" id="12" className="btn">_</button>
-                    </div>
-                </div>
-
-                
-               
-                
-                
-            
-        </div>
-        
-        
-        <form action="" method="" id="squall">
-            <button type="button" id="Exo2">
-                    VALIDER
-        </button>
-    </form>
-    
-    </div>
-    
-    </div>
-    </>
-  
+            </>
         );
     }
-}
-function AppFunc() {
-  return (<h1>Test</h1>
-    );
 }
 
 export default App;

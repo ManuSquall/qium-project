@@ -2,7 +2,7 @@
 # Quatre Images Un Mot project (version React)
 
 <!-- Description -->
-![output4](/readme/output4.png)
+![output1](/readme/output4.png)
 
 
 <!-- ## Context -->
