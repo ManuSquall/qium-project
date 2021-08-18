@@ -196,9 +196,14 @@ function BtnGroupButton(props) {
     
 
     function handleClick(params) {
-        props.onChangeEssai(props.essai + value);
-        setDisabledAttribute("disabled");
-        props.position.push(props.id);
+        console.log(props.position.length);
+        console.log(props.essai.length);
+        if(props.position.length <= props.solution.length ){
+            props.onChangeEssai(props.essai + value);
+            setDisabledAttribute("disabled");
+            props.position.push(props.id);
+        }
+        
         // for (let j = 0; j < props.solution.length; j++) {
             
         //     if(document.getElementById(("lettre"+(j+1))).getAttribute("disabled")===""){
@@ -264,8 +269,17 @@ function App(){
                     {/* <BtnLettre solution={this.state.solution} essai={this.state.essai}/> */}
                     <BtnLettreButton id={1} key={1} class="lettre" onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} />
                     <BtnLettreButton id={2} key={2} class="lettre" onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
+                    <BtnLettreButton id={3} key={3} class="lettre" onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
+                    <BtnGroupButton id={1} key={1} class="btn" solution={solution} onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
+                    <BtnGroupButton id={2} key={2} class="btn" solution={solution} onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
+                    <BtnGroupButton id={3} key={3} class="btn" solution={solution} onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
+                    <BtnGroupButton id={4} key={4} class="btn" solution={solution} onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
+                    <BtnGroupButton id={5} key={5} class="btn" solution={solution} onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
+                    <BtnGroupButton id={6} key={6} class="btn" solution={solution} onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
+                    <BtnGroupButton id={7} key={7} class="btn" solution={solution} onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
                     <BtnGroupButton id={8} key={8} class="btn" solution={solution} onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                    <BtnGroupButton id={9} key={9} class="btn" solution={solution} onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
+                    
+                        
                     <br/>
                     <Button id="Exo2" value="VALIDER"/>
                 </div>
