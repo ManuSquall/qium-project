@@ -5,23 +5,24 @@ import ImgSoluce from './../../assets/_1_1.jpg'
 
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const NBRBUTTON = 12;
+// test 
+// const NBRBUTTON = 5;
 
-class DivLettre extends React.Component {
+function DivLettre(props){
 
-    displayButton(number){
+    function displayButton(number){
         return Array.from(Array(number), (notUsed, index) => {
-            return <BtnLettreButton id={index+1} key={index} class="lettre"/>;
+            return <BtnLettreButton id={index+1} key={index} class="lettre" solution={props.solution} setEssai={(newEssai)=>{props.setEssai(newEssai)}} essai={props.essai} position={props.position} setPosition={(newPosition)=>{props.setPosition(newPosition)}}/>;
         })
     }
 
-    render(){
+    
         return (
         <div className="divLettre">
-            {this.displayButton(this.props.nbrRep)
-            }
+            {displayButton(props.solution.length)}
         </div>
     );
-    }
+    
 }
 
 function NavBar(props) {
@@ -38,7 +39,7 @@ function NavBar(props) {
 
 function BtnLettre(props){
 
-    const [proposedWord, setProposedWord] = React.useState(props.essai);
+    // const [proposedWord, setProposedWord] = React.useState(props.essai);
 
     function fillWithSolutionWord(solution) {
         let cpt = solution.length;
@@ -57,7 +58,7 @@ function BtnLettre(props){
 
     function fillWithRandomWord() {
         for (let i = 0; i < NBRBUTTON; i++) {
-            var btnElement = document.getElementById((""+(i+1)));
+            let btnElement = document.getElementById((""+(i+1)));
             if(btnElement.textContent==="_"){
                 let randomNumber = (""+Math.ceil(Math.random()*(25)));
                 btnElement.textContent=ALPHABET[randomNumber];     
@@ -65,21 +66,66 @@ function BtnLettre(props){
         }
     }
 
+    // function for random shuffling
+    String.prototype.shuffle = function () {
+        let a = this.split(""),
+            n = a.length;
+    
+        for(let i = n - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            let tmp = a[i];
+            a[i] = a[j];
+            a[j] = tmp;
+        }
+        return a.join("");
+    }
+
+    /*
+    creates string by padding the answer string with
+    random letter that are not already in the answer
+    string. Then returns the shuffled string in the end.
+    */
+    function createstring(level) {
+        let answer = props.solution;
+        let numberremaining = NBRBUTTON - answer.length;
+        let s = answer;
+        let ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        let possible = "";
+        for (let i = 0; i < ALPHABET.length; ++i) {
+            if (answer.indexOf(ALPHABET[i]) == -1)
+                possible += ALPHABET[i];
+        }
+        possible = possible.shuffle();
+        for (let i = 0; i < numberremaining; ++i)
+            s += possible[i];
+        s = s.shuffle();
+        return s;
+    }
+
+    function fillWithWord(cpt, solution){
+        for (let i = 0; i < NBRBUTTON; i++) {
+            let randomNumber = (""+Math.ceil(Math.random()*(25)));
+
+        }
+    }
+
+    let s = createstring(props.solution);
+
     // fill the propositions buttons with solution words on mount
-    useEffect(()=>{
-        fillWithSolutionWord(props.solution);        
-    });
+    // useEffect(()=>{
+    //     fillWithSolutionWord(props.solution);        
+    //     fillWithSolutionWord(props.solution);        
+    // });
     
     // fill the propositions buttons with random words on mount
-    useEffect(()=>{
-        fillWithRandomWord(props.solution);        
-    });
+    // useEffect(()=>{
+    //     fillWithRandomWord(props.solution);        
+    // });
 
         return ( 
             <div id="btnLettre">
             {Array.from(Array(NBRBUTTON), (notUsed, i)=>{
-                return <
-                    BtnGroupButton id={i} key={i} class="btn" solution={props.solution} />;
+                return <BtnGroupButton id={i} key={i} value={s[i]} class="btn" solution={props.solution} setEssai={(newEssai)=>{props.setEssai(newEssai)}} essai={props.essai} position={props.position} setPosition={(newPosition)=>{props.setPosition(newPosition)}}/>;
                 })}
             </div>
         );
@@ -96,31 +142,21 @@ function BtnLettreButton(props) {
     //     console.log("value a changé dans noir");
     //  }, [value]);
 
+    // lorsque l'essai change quand un bouton blanc est appuyé
+    // si la length du tableau est = au numéro de button et = à la longueur de l'essai
      useEffect(()=> {
-        console.log("essai dans lettre"+props.id+" : "+props.essai);
+        // console.log("essai dans lettre"+props.id+" : "+props.essai);
 
         // console.log(document.getElementById(""+props.id));
         // console.log(props.id);
         // console.log(props.position);
-        // console.log(props.essai[(props.position.length-1)]);
-        if((props.position.length===props.id && props.position.length===props.essai.length)){
-            setValue(props.essai[(props.position.length-1)]);
+        // console.log(props.essai[(Object.keys(props.position).length-1)]);
+        if((Object.keys(props.position).length===props.id && Object.keys(props.position).length===props.essai.length)){
+            setValue(props.essai[(Object.keys(props.position).length-1)]);
             setDisabledAttribute("")
         }
 
-        // return (() => {setDisabledAttribute("")});
         
-
-        // let a = [];
-        // let fullBtn = document.getElementsByClassName("btn");
-        // console.log(fullBtn);
-        // for (let i = 0; i < fullBtn.length; i++) {
-        //     console.log(fullBtn[i].getAttribute("disabled"));
-        //     if(fullBtn[i].getAttribute("disabled")!==null){
-        //         a.push(fullBtn[i]);
-        //     }
-
-        // }
 
         // setValue(props.essai);
         // setDisabledAttribute("");
@@ -128,11 +164,19 @@ function BtnLettreButton(props) {
 
 
     function handleClick(params) {
-
-        props.onChangeEssai(props.essai.slice(0, -1));
-        // if()
+ 
+        //delete the specific character
+        let newEssai = "";
+        for (let i = 0; i < props.essai.length; i++) {
+            if((i)!==(props.id-1-(props.solution.length-props.essai.length))){
+                newEssai += props.essai[i]; 
+            }
+        }
+        console.log("specific charrrrrrrrrrrrrrrrrr : " + (newEssai));
+        props.setEssai(newEssai);
         setValue("_");
         setDisabledAttribute("disabled");
+
         // setDisabledAttribute("disabled");
         /*
         for (let j = 0; j < NBRBUTTON; j++) {
@@ -178,68 +222,61 @@ function Images(props) {
 
 function BtnGroupButton(props) {
 
-    const [value, setValue] = React.useState("A");
+    const [value, setValue] = React.useState(props.value);
     const [disabledAttribute, setDisabledAttribute] = React.useState("");
 
-
+    // event quand une lettre noire est cliquée on sélectionne le blanc qui convient
     useEffect(()=> {
-        console.log("essai dans btn"+props.id+" : "+props.essai);
-        console.log("squall1 : " + (props.position[props.position.length-1]===props.id  ));
-        console.log("squall2 : " + (props.position.length===(props.essai.length+1)));
-        if((props.position[props.position.length-1]===props.id  ) && (props.position.length===(props.essai.length+1))){
-            props.position.pop();
-            setDisabledAttribute("")
+        // console.log("essai dans btn"+props.id+" : "+props.essai);
+        // console.log("squall1 : " + (props.position[Object.keys(props.position).length-1]===props.id  ));
+        // console.log("squall2 : " + (Object.keys(props.position).length===(props.essai.length+1)));
+        
+        if(props.essai.length < Object.keys(props.position).length){
+            for (var key in props.position) {
+                // si ce bouton est dans position et était(ou est tjrs) dans essai
+                
+                if(key === (props.id+"") && props.position[key] ===value){
+
+                    // on check s'il n'est dans essai (donc c'est celui qu'on vient de cliquer
+                    console.log("squall");
+
+                    for (let i = 0; i < props.essai.length; i++) {
+                        if(props.essai[i]===value){
+                            delete props.position[(props.id+"")];
+                            setDisabledAttribute("");
+
+                        }
+                        
+                    }
+
+                }
+            }
         }
+
+        
+            // props.position.pop();
+
         
      },[props.essai]);
 
+     useEffect(() => {
+        // console.log("");
+      }, []);
+
     
 
-    function handleClick(params) {
-        console.log(props.position.length);
-        console.log(props.essai.length);
-        if(props.position.length <= props.solution.length ){
-            props.onChangeEssai(props.essai + value);
+    function handleClick() {
+        if(Object.keys(props.position).length < props.solution.length ){
+            props.setEssai(props.essai + value);
             setDisabledAttribute("disabled");
-            props.position.push(props.id);
+            let b = props.position;
+            b[props.id]=value;
+            props.setPosition(b);
         }
-        
-        // for (let j = 0; j < props.solution.length; j++) {
-            
-        //     if(document.getElementById(("lettre"+(j+1))).getAttribute("disabled")===""){
-
-        //         // setDisabledAttribute("disabled");
-
-        //         document.getElementById(("lettre"+(j+1))).textContent = document.getElementById((props.id+1)).textContent;
-        //         // document.getElementById((props.id+1)).textContent = "_";
-        //         setValue("_");
-        //         console.log("here dude");
-        //         console.log(value);
-                
-        //         POSITION[j]=props.id;
-        //         document.getElementById(("lettre"+(j+1))).removeAttribute("disabled");
-
-        //         // cpt++;
-        //         break;
-        //     }
-            
-        // }
-
-        // setDisabledAttribute("disabled");
-        // setValue("_");
     }
 
-    function handleChange(event){
-        // const {name, value} = event.target;
-        // console.log("Quelque chose a changé");
-        // console.log(name);
-        console.log(event.target.value);
-        // const { name, value } = event.target;
-        // setValue(prevValue => ({ ...prevValue, [name]: value }));
-    }    
-
     return (
-        <button type="button" value="" id={props.id+1} className={props.class} onChange={handleChange} onClick={handleClick} disabled={disabledAttribute} >{value}</button>
+        <button type="button" value="" id={props.id+1} className={props.class} onClick={handleClick} disabled={disabledAttribute} >{value}</button>
     );
 }
 
@@ -251,11 +288,18 @@ function App(){
     const [level, setLevel] = React.useState(1);
     const [solution, setSolution] = React.useState("FEU");
     const [essai, setEssai] = React.useState("");
-    const [position, setPosition] = React.useState([]);
+    const [position, setPosition] = React.useState({});
+
 
     useEffect(()=> {
-        console.log("essai change");
+        console.log("essai change : " + essai);
+        console.log(position);
     },[essai]);
+    
+    useEffect(()=> {
+        console.log("position change : ");
+        console.log(position);
+    },[position]);
     
     
         return (
@@ -265,20 +309,23 @@ function App(){
                     <hr/>
                     <Images/>
                     <hr/>
-                    {/* <DivLettre nbrRep={this.state.solution.length} essai={this.state.essai} /> */}
-                    {/* <BtnLettre solution={this.state.solution} essai={this.state.essai}/> */}
-                    <BtnLettreButton id={1} key={1} class="lettre" onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} />
-                    <BtnLettreButton id={2} key={2} class="lettre" onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                    <BtnLettreButton id={3} key={3} class="lettre" onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                    <BtnGroupButton id={1} key={1} class="btn" solution={solution} onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                    <BtnGroupButton id={2} key={2} class="btn" solution={solution} onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                    <BtnGroupButton id={3} key={3} class="btn" solution={solution} onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                    <BtnGroupButton id={4} key={4} class="btn" solution={solution} onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                    <BtnGroupButton id={5} key={5} class="btn" solution={solution} onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                    <BtnGroupButton id={6} key={6} class="btn" solution={solution} onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                    <BtnGroupButton id={7} key={7} class="btn" solution={solution} onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                    <BtnGroupButton id={8} key={8} class="btn" solution={solution} onChangeEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                    
+                    <DivLettre solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} />
+                    <BtnLettre solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} />
+
+
+
+                    {/* <BtnLettreButton id={1} key={1} class="lettre" setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} />
+                    <BtnLettreButton id={2} key={2} class="lettre" setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
+                    <BtnLettreButton id={3} key={3} class="lettre" setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
+                    <BtnGroupButton id={1} key={1} class="btn" solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
+                    <BtnGroupButton id={2} key={2} class="btn" solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
+                    <BtnGroupButton id={3} key={3} class="btn" solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
+                    <BtnGroupButton id={4} key={4} class="btn" solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
+                    <BtnGroupButton id={5} key={5} class="btn" solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
+                    <BtnGroupButton id={6} key={6} class="btn" solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
+                    <BtnGroupButton id={7} key={7} class="btn" solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
+                    <BtnGroupButton id={8} key={8} class="btn" solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
+                     */}
                         
                     <br/>
                     <Button id="Exo2" value="VALIDER"/>
