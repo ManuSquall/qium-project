@@ -68,8 +68,8 @@ function BtnLettre(props){
 
     // function for random shuffling
     String.prototype.shuffle = function () {
-        let a = this.split(""),
-            n = a.length;
+        let a = this.split("");
+        let n = a.length;
     
         for(let i = n - 1; i > 0; i--) {
             let j = Math.floor(Math.random() * (i + 1));
@@ -138,60 +138,75 @@ function BtnLettreButton(props) {
     const [disabledAttribute, setDisabledAttribute] = React.useState("disabled");
 
     
-    // useEffect(()=> {
-    //     console.log("value a changé dans noir");
-    //  }, [value]);
+    
 
     // lorsque l'essai change quand un bouton blanc est appuyé
     // si la length du tableau est = au numéro de button et = à la longueur de l'essai
      useEffect(()=> {
-        // console.log("essai dans lettre"+props.id+" : "+props.essai);
+        
 
-        // console.log(document.getElementById(""+props.id));
-        // console.log(props.id);
-        // console.log(props.position);
-        // console.log(props.essai[(Object.keys(props.position).length-1)]);
-        if((Object.keys(props.position).length===props.id && Object.keys(props.position).length===props.essai.length)){
-            setValue(props.essai[(Object.keys(props.position).length-1)]);
-            setDisabledAttribute("")
+        if(props.essai.length === Object.keys(props.position).length){
+        // find the white button associated with this lettre
+        for (const key in props.position) {
+            if (Object.hasOwnProperty.call(props.position, key)) {
+                const element = props.position[key];
+                ;
+
+
+                if(element.lettreId ===props.id){
+                    console.log("btn lettre useEffect start")
+                    setValue(element.value);
+                    setDisabledAttribute("");
+                }
+                
+            }
         }
 
         
-
-        // setValue(props.essai);
-        // setDisabledAttribute("");
+    }
      },[props.essai]);
 
 
-    function handleClick(params) {
+     function remove_character(str, char_pos) 
+        {
+            let part1 = str.substring(0, char_pos);
+            let part2 = str.substring(char_pos + 1, str.length);
+            return (part1 + part2);
+        }
+
+        
+    function handleClick() {
+        
+
+        if(props.essai.length === Object.keys(props.position).length){
+        console.log("btn lettre handleclik start");
  
         //delete the specific character
         let newEssai = "";
-        for (let i = 0; i < props.essai.length; i++) {
-            if((i)!==(props.id-1-(props.solution.length-props.essai.length))){
-                newEssai += props.essai[i]; 
+        
+        // loop position
+        for (const key in props.position) {
+            if (Object.hasOwnProperty.call(props.position, key)) {
+                const element = props.position[key];
+
+                // delete the corresponding lettre in essai
+                if(element.lettreId===props.id){
+                    
+                    newEssai = remove_character(props.essai, (element.lettreId-1));
+                    break;
+                }
+                
             }
         }
-        console.log("specific charrrrrrrrrrrrrrrrrr : " + (newEssai));
-        props.setEssai(newEssai);
+
+        //################################
+        
         setValue("_");
         setDisabledAttribute("disabled");
-
-        // setDisabledAttribute("disabled");
-        /*
-        for (let j = 0; j < NBRBUTTON; j++) {
-            
-            console.log((POSITION[(props.id-1)]===(j+1)));
-
-            
-            if(POSITION[(props.id-1)]===(j+1)){
-                // document.getElementById(("lettre"+(j+1))).removeAttribute("disabled");
-                setDisabledAttribute("disabled");
-                setValue("_");
-                // cpt--;
-            }
-        }*/
-        // return 1;
+        props.setEssai(newEssai);
+        console.log("new essai : "+newEssai);
+        console.log("props.essai : "+props.essai);
+    }
     }
 
     return (
@@ -225,53 +240,70 @@ function BtnGroupButton(props) {
     const [value, setValue] = React.useState(props.value);
     const [disabledAttribute, setDisabledAttribute] = React.useState("");
 
-    // event quand une lettre noire est cliquée on sélectionne le blanc qui convient
+    // event quand une lettre noire est cliquée (on l'a déjà supprimé de essai) on sélectionne le blanc qui convient pour le réactiver (et delete au niveau de position)
     useEffect(()=> {
-        // console.log("essai dans btn"+props.id+" : "+props.essai);
-        // console.log("squall1 : " + (props.position[Object.keys(props.position).length-1]===props.id  ));
-        // console.log("squall2 : " + (Object.keys(props.position).length===(props.essai.length+1)));
         
+
+       
         if(props.essai.length < Object.keys(props.position).length){
-            for (var key in props.position) {
-                // si ce bouton est dans position et était(ou est tjrs) dans essai
+        console.log("btn group useEffect start");
+        for (const key in props.position) {
+            if (Object.hasOwnProperty.call(props.position, key)) {
+                const element = props.position[key];
                 
-                if(key === (props.id+"") && props.position[key] ===value){
-
-                    // on check s'il n'est dans essai (donc c'est celui qu'on vient de cliquer
-                    console.log("squall");
-
-                    for (let i = 0; i < props.essai.length; i++) {
-                        if(props.essai[i]===value){
-                            delete props.position[(props.id+"")];
-                            setDisabledAttribute("");
-
-                        }
-                        
-                    }
-
+                // console.log("Si la valeur supprimée est toujours dans sa place à essai");
+                // console.log("props.essai[element.lettreId-1]!==value"+ props.essai[(element.lettreId-1)] + " " +value);
+                // console.log("Si la valeur n'as pas reculé d'un pas à cause de celle supprimée avant");
+                // console.log("props.essai[element.lettreId-1]!==value"+ props.essai[(element.lettreId-2)] + " " +value);
+                // si il est dans position && (que sa position de essai n'est plus la même, ou n'as pas diminué d'un rang vers la gauche dû à une autre lettre supprimé) c'est celle qu'on a delete
+                if(key === (props.id+"") && (props.essai[element.lettreId-1]!==value && props.essai[element.lettreId-2]!==value)){
+                    console.log("element supprimé dans essai : "+element.value);
+                    console.log(key);
+                    console.log(element);
+                    delete props.position[(props.id+"")];
+                    setDisabledAttribute("");
                 }
+                
             }
         }
 
-        
-            // props.position.pop();
+        }
 
         
      },[props.essai]);
 
-     useEffect(() => {
-        // console.log("");
-      }, []);
+    //  useEffect(()=> {
+    //     console.log("position change = ");
+    //     console.log(props.position);
+    // },[props.position[props.id]]);
 
     
-
+    // une fois cliqué ajoute à position la key avec l'id btn blanc assigné
     function handleClick() {
         if(Object.keys(props.position).length < props.solution.length ){
-            props.setEssai(props.essai + value);
+            console.log("btn group handleclik start");
+
+
+            // todo: loop trought essai and check button which contains "_" to replace it
+            let a;
+            let c = document.getElementsByClassName("lettre");
+            for (let i = 0; i < c.length; i++) {
+                if(c[i].textContent==="_"){
+                    // lettre button id begin with 1
+                    a=(i+1);
+                    break;
+                }
+            }
+
+            // ! new letter isn't always added at the end
+            // ! props.setEssai(props.essai + value);
             setDisabledAttribute("disabled");
             let b = props.position;
-            b[props.id]=value;
+            b[(props.id)]={value: value, lettreId: a};
             props.setPosition(b);
+
+            // making this only to react in black button (lettre)
+            props.setEssai(props.essai+value);
         }
     }
 
@@ -286,20 +318,17 @@ function Button(props) {
 function App(){
 
     const [level, setLevel] = React.useState(1);
-    const [solution, setSolution] = React.useState("FEU");
+    const [solution, setSolution] = React.useState("AMAS");
     const [essai, setEssai] = React.useState("");
     const [position, setPosition] = React.useState({});
 
 
-    useEffect(()=> {
-        console.log("essai change : " + essai);
-        console.log(position);
-    },[essai]);
+    // useEffect(()=> {
+    //     console.log("essai change : " + essai +"\nposition : ");
+    //     console.log(position);
+    // },[essai]);
     
-    useEffect(()=> {
-        console.log("position change : ");
-        console.log(position);
-    },[position]);
+    
     
     
         return (
