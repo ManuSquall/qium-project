@@ -12,7 +12,7 @@ function DivLettre(props){
 
     function displayButton(number){
         return Array.from(Array(number), (notUsed, index) => {
-            return <BtnLettreButton id={index+1} key={index} class="lettre" solution={props.solution} setEssai={(newEssai)=>{props.setEssai(newEssai)}} essai={props.essai} position={props.position} setPosition={(newPosition)=>{props.setPosition(newPosition)}}/>;
+            return <BtnLettreButton id={index+1} key={index} class="lettre" solution={props.solution} setEssai={(newEssai)=>{props.setEssai(newEssai)}} essai={props.essai} position={props.position} setPosition={(newPosition)=>{props.setPosition(newPosition)}} positionTwo={props.positionTwo} setPositionTwo={(newPositionTwo)=>{props.setPositionTwo(newPositionTwo)}} />;
         })
     }
 
@@ -125,7 +125,7 @@ function BtnLettre(props){
         return ( 
             <div id="btnLettre">
             {Array.from(Array(NBRBUTTON), (notUsed, i)=>{
-                return <BtnGroupButton id={i} key={i} value={s[i]} class="btn" solution={props.solution} setEssai={(newEssai)=>{props.setEssai(newEssai)}} essai={props.essai} position={props.position} setPosition={(newPosition)=>{props.setPosition(newPosition)}}/>;
+                return <BtnGroupButton id={i} key={i} value={s[i]} class="btn" solution={props.solution} setEssai={(newEssai)=>{props.setEssai(newEssai)}} essai={props.essai} position={props.position} setPosition={(newPosition)=>{props.setPosition(newPosition)}} positionTwo={props.positionTwo} setPositionTwo={(newPositionTwo)=>{props.setPositionTwo(newPositionTwo)}} />;
                 })}
             </div>
         );
@@ -145,7 +145,7 @@ function BtnLettreButton(props) {
      useEffect(()=> {
         
 
-        if(props.essai.length === Object.keys(props.position).length){
+        if(props.essai === Object.keys(props.position).length && Object.keys(props.positionTwo).length < Object.keys(props.position).length ){
         // find the white button associated with this lettre
         for (const key in props.position) {
             if (Object.hasOwnProperty.call(props.position, key)) {
@@ -157,6 +157,14 @@ function BtnLettreButton(props) {
                     console.log("btn lettre useEffect start")
                     setValue(element.value);
                     setDisabledAttribute("");
+
+
+                    // on ajoute ensuite à positionTwo 
+                    let b = props.positionTwo;
+                    b[(props.id)]={value: element.value, btnId: key};
+                    props.setPositionTwo(b);
+
+
                 }
                 
             }
@@ -178,21 +186,26 @@ function BtnLettreButton(props) {
     function handleClick() {
         
 
-        if(props.essai.length === Object.keys(props.position).length){
+        if(Object.keys(props.positionTwo).length === Object.keys(props.position).length){
         console.log("btn lettre handleclik start");
  
         //delete the specific character
-        let newEssai = "";
         
         // loop position
-        for (const key in props.position) {
-            if (Object.hasOwnProperty.call(props.position, key)) {
-                const element = props.position[key];
+        for (const key in props.positionTwo) {
+            if (Object.hasOwnProperty.call(props.positionTwo, key)) {
+                const element = props.positionTwo[key];
 
                 // delete the corresponding lettre in essai
-                if(element.lettreId===props.id){
+                if(key===(props.id+"")){
                     
-                    newEssai = remove_character(props.essai, (element.lettreId-1));
+                    setValue("_");
+                    setDisabledAttribute("disabled");
+                    delete props.positionTwo[(props.id+"")];
+
+                    props.setEssai(props.essai-1);
+                    console.log("Lettre à supprimé : "+ element.value+" idlettre : " + element.btnId);
+
                     break;
                 }
                 
@@ -201,11 +214,8 @@ function BtnLettreButton(props) {
 
         //################################
         
-        setValue("_");
-        setDisabledAttribute("disabled");
-        props.setEssai(newEssai);
-        console.log("new essai : "+newEssai);
-        console.log("props.essai : "+props.essai);
+        // console.log("new essai : "+newEssai);
+        // console.log("props.essai : "+props.essai);
     }
     }
 
@@ -245,27 +255,65 @@ function BtnGroupButton(props) {
         
 
        
-        if(props.essai.length < Object.keys(props.position).length){
+        if(Object.keys(props.positionTwo).length < Object.keys(props.position).length && (props.essai < Object.keys(props.position).length)){
         console.log("btn group useEffect start");
-        for (const key in props.position) {
-            if (Object.hasOwnProperty.call(props.position, key)) {
-                const element = props.position[key];
+        console.log("essai change : " + props.essai);
+        console.log("\nposition : ");
+        console.log(props.position);
+        
+        console.log("\npositionTwo : ");
+        console.log(props.positionTwo);
+
+
+        
                 
-                // console.log("Si la valeur supprimée est toujours dans sa place à essai");
-                // console.log("props.essai[element.lettreId-1]!==value"+ props.essai[(element.lettreId-1)] + " " +value);
-                // console.log("Si la valeur n'as pas reculé d'un pas à cause de celle supprimée avant");
-                // console.log("props.essai[element.lettreId-1]!==value"+ props.essai[(element.lettreId-2)] + " " +value);
-                // si il est dans position && (que sa position de essai n'est plus la même, ou n'as pas diminué d'un rang vers la gauche dû à une autre lettre supprimé) c'est celle qu'on a delete
-                if(key === (props.id+"") && (props.essai[element.lettreId-1]!==value && props.essai[element.lettreId-2]!==value)){
-                    console.log("element supprimé dans essai : "+element.value);
-                    console.log(key);
-                    console.log(element);
+               let aSupprimer = 0;
+               let cptPosition = 0;
+
+               // on check si le bouton n'est pas dans  positionTwo
+               for (const keyTwo in props.positionTwo) {
+                   if (Object.hasOwnProperty.call(props.positionTwo, keyTwo)) {
+                       const elementTwo = props.positionTwo[keyTwo];
+
+                    //    console.log(elementTwo.btnId);
+                    //    console.log((props.id+""));
+                    //    console.log(elementTwo.value);
+                    //    console.log(value);
+
+                       if(elementTwo.btnId === (props.id+"") && elementTwo.value===value){
+                        //    s'il est dans position on incrémente
+                            aSupprimer= aSupprimer +1;
+                            // console.log("BBBBBBBBBBBBBBBBBBBBBBBBBB : "+elementTwo.value+" "+elementTwo.btnId);
+
+                       }
+                       
+                   }
+               }
+               console.log("a supprimer 1 : "+ aSupprimer);
+
+
+               // on check si le bouton est tjrs dans  position
+               for (const key in props.position) {
+                   if (Object.hasOwnProperty.call(props.position, key)) {
+                       const element = props.position[key];
+
+                       if((key === (props.id+"") && element.value===value)){
+                            cptPosition = 0;
+                            break;
+                        }else{
+                            cptPosition= cptPosition +1;
+                        }
+                   }
+               }
+                       
+
+
+               if(aSupprimer ===0 && cptPosition===0 ) {
+                    //    ce boutton est dans position mais pas dans positionTwo: il doit être supprimé
                     delete props.position[(props.id+"")];
                     setDisabledAttribute("");
-                }
-                
-            }
-        }
+               }
+          
 
         }
 
@@ -280,7 +328,7 @@ function BtnGroupButton(props) {
     
     // une fois cliqué ajoute à position la key avec l'id btn blanc assigné
     function handleClick() {
-        if(Object.keys(props.position).length < props.solution.length ){
+        if(Object.keys(props.position).length < props.solution.length && props.essai === Object.keys(props.positionTwo).length){
             console.log("btn group handleclik start");
 
 
@@ -295,16 +343,14 @@ function BtnGroupButton(props) {
                 }
             }
 
-            // ! new letter isn't always added at the end
-            // ! props.setEssai(props.essai + value);
             setDisabledAttribute("disabled");
             let b = props.position;
             b[(props.id)]={value: value, lettreId: a};
             props.setPosition(b);
-
             // making this only to react in black button (lettre)
-            props.setEssai(props.essai+value);
+            props.setEssai((props.essai+1));
         }
+         
     }
 
     return (
@@ -319,13 +365,24 @@ function App(){
 
     const [level, setLevel] = React.useState(1);
     const [solution, setSolution] = React.useState("AMAS");
-    const [essai, setEssai] = React.useState("");
+    
+    // compteur qui va compter le nombre de lettre appuyée
+    const [essai, setEssai] = React.useState(0);
+
+    // tableau des blanc qui a pour key les id blanc et value les lettreid correspondant ainsi que les value blanc
     const [position, setPosition] = React.useState({});
+
+    // tableau des lettres noires qui a pour key les id lettres et value les btnid correspondant ainsi que les value blanc assignées
+    const [positionTwo, setPositionTwo] = React.useState({});
 
 
     // useEffect(()=> {
-    //     console.log("essai change : " + essai +"\nposition : ");
+    //     console.log("essai change : " + essai);
+    //     console.log("\nposition : ");
     //     console.log(position);
+        
+    //     console.log("\npositionTwo : ");
+    //     console.log(positionTwo);
     // },[essai]);
     
     
@@ -338,8 +395,8 @@ function App(){
                     <hr/>
                     <Images/>
                     <hr/>
-                    <DivLettre solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} />
-                    <BtnLettre solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} />
+                    <DivLettre solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} positionTwo={positionTwo} setPositionTwo={(newPositionTwo)=>{setPositionTwo(newPositionTwo)}} />
+                    <BtnLettre solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} positionTwo={positionTwo} setPositionTwo={(newPositionTwo)=>{setPositionTwo(newPositionTwo)}} />
 
 
 
