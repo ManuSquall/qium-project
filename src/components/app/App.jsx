@@ -3,10 +3,7 @@ import './App.css';
 import Logo from './../../assets/raw.jpg'
 import ImgSoluce from './../../assets/_1_1.jpg'
 
-const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const NBRBUTTON = 12;
-// test 
-// const NBRBUTTON = 5;
 
 function DivLettre(props){
 
@@ -16,7 +13,6 @@ function DivLettre(props){
         })
     }
 
-    
         return (
         <div className="divLettre">
             {displayButton(props.solution.length)}
@@ -38,33 +34,6 @@ function NavBar(props) {
 }
 
 function BtnLettre(props){
-
-    // const [proposedWord, setProposedWord] = React.useState(props.essai);
-
-    function fillWithSolutionWord(solution) {
-        let cpt = solution.length;
-        for (let i = 0; i < solution.length; i++) {
-            let randomPosition = (""+Math.ceil(Math.random()*(12-1)+1));
-            let btnElement = document.getElementById(randomPosition);
-            if(btnElement.textContent === "_"){
-                btnElement.textContent=props.solution[(cpt-1)];
-                cpt--;
-            }
-            else{
-                i--;
-            }
-        }
-    }
-
-    function fillWithRandomWord() {
-        for (let i = 0; i < NBRBUTTON; i++) {
-            let btnElement = document.getElementById((""+(i+1)));
-            if(btnElement.textContent==="_"){
-                let randomNumber = (""+Math.ceil(Math.random()*(25)));
-                btnElement.textContent=ALPHABET[randomNumber];     
-            }
-        }
-    }
 
     // function for random shuffling
     String.prototype.shuffle = function () {
@@ -92,7 +61,7 @@ function BtnLettre(props){
         let ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         let possible = "";
         for (let i = 0; i < ALPHABET.length; ++i) {
-            if (answer.indexOf(ALPHABET[i]) == -1)
+            if (answer.indexOf(ALPHABET[i]) === -1)
                 possible += ALPHABET[i];
         }
         possible = possible.shuffle();
@@ -102,25 +71,7 @@ function BtnLettre(props){
         return s;
     }
 
-    function fillWithWord(cpt, solution){
-        for (let i = 0; i < NBRBUTTON; i++) {
-            let randomNumber = (""+Math.ceil(Math.random()*(25)));
-
-        }
-    }
-
     let s = createstring(props.solution);
-
-    // fill the propositions buttons with solution words on mount
-    // useEffect(()=>{
-    //     fillWithSolutionWord(props.solution);        
-    //     fillWithSolutionWord(props.solution);        
-    // });
-    
-    // fill the propositions buttons with random words on mount
-    // useEffect(()=>{
-    //     fillWithRandomWord(props.solution);        
-    // });
 
         return ( 
             <div id="btnLettre">
@@ -163,24 +114,11 @@ function BtnLettreButton(props) {
                     let b = props.positionTwo;
                     b[(props.id)]={value: element.value, btnId: key};
                     props.setPositionTwo(b);
-
-
                 }
-                
             }
         }
-
-        
     }
      },[props.essai]);
-
-
-     function remove_character(str, char_pos) 
-        {
-            let part1 = str.substring(0, char_pos);
-            let part2 = str.substring(char_pos + 1, str.length);
-            return (part1 + part2);
-        }
 
         
     function handleClick() {
@@ -211,11 +149,6 @@ function BtnLettreButton(props) {
                 
             }
         }
-
-        //################################
-        
-        // console.log("new essai : "+newEssai);
-        // console.log("props.essai : "+props.essai);
     }
     }
 
@@ -225,6 +158,9 @@ function BtnLettreButton(props) {
 }
 
 function ImgSolutions(props) {
+
+    // ! add the possibility to zoom an image
+
     return (<img id={"img" + props.id} className="img" src={props.ImgSoluce}  alt=""/>);
 }
 
@@ -252,9 +188,7 @@ function BtnGroupButton(props) {
 
     // event quand une lettre noire est cliquée (on l'a déjà supprimé de essai) on sélectionne le blanc qui convient pour le réactiver (et delete au niveau de position)
     useEffect(()=> {
-        
 
-       
         if(Object.keys(props.positionTwo).length < Object.keys(props.position).length && (props.essai < Object.keys(props.position).length)){
         console.log("btn group useEffect start");
         console.log("essai change : " + props.essai);
@@ -274,22 +208,13 @@ function BtnGroupButton(props) {
                for (const keyTwo in props.positionTwo) {
                    if (Object.hasOwnProperty.call(props.positionTwo, keyTwo)) {
                        const elementTwo = props.positionTwo[keyTwo];
-
-                    //    console.log(elementTwo.btnId);
-                    //    console.log((props.id+""));
-                    //    console.log(elementTwo.value);
-                    //    console.log(value);
-
                        if(elementTwo.btnId === (props.id+"") && elementTwo.value===value){
                         //    s'il est dans position on incrémente
                             aSupprimer= aSupprimer +1;
-                            // console.log("BBBBBBBBBBBBBBBBBBBBBBBBBB : "+elementTwo.value+" "+elementTwo.btnId);
-
                        }
                        
                    }
                }
-               console.log("a supprimer 1 : "+ aSupprimer);
 
 
                // on check si le bouton est tjrs dans  position
@@ -319,12 +244,6 @@ function BtnGroupButton(props) {
 
         
      },[props.essai]);
-
-    //  useEffect(()=> {
-    //     console.log("position change = ");
-    //     console.log(props.position);
-    // },[props.position[props.id]]);
-
     
     // une fois cliqué ajoute à position la key avec l'id btn blanc assigné
     function handleClick() {
@@ -374,19 +293,6 @@ function App(){
 
     // tableau des lettres noires qui a pour key les id lettres et value les btnid correspondant ainsi que les value blanc assignées
     const [positionTwo, setPositionTwo] = React.useState({});
-
-
-    // useEffect(()=> {
-    //     console.log("essai change : " + essai);
-    //     console.log("\nposition : ");
-    //     console.log(position);
-        
-    //     console.log("\npositionTwo : ");
-    //     console.log(positionTwo);
-    // },[essai]);
-    
-    
-    
     
         return (
             <>
@@ -398,21 +304,6 @@ function App(){
                     <DivLettre solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} positionTwo={positionTwo} setPositionTwo={(newPositionTwo)=>{setPositionTwo(newPositionTwo)}} />
                     <BtnLettre solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} positionTwo={positionTwo} setPositionTwo={(newPositionTwo)=>{setPositionTwo(newPositionTwo)}} />
 
-
-
-                    {/* <BtnLettreButton id={1} key={1} class="lettre" setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} />
-                    <BtnLettreButton id={2} key={2} class="lettre" setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                    <BtnLettreButton id={3} key={3} class="lettre" setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                    <BtnGroupButton id={1} key={1} class="btn" solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                    <BtnGroupButton id={2} key={2} class="btn" solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                    <BtnGroupButton id={3} key={3} class="btn" solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                    <BtnGroupButton id={4} key={4} class="btn" solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                    <BtnGroupButton id={5} key={5} class="btn" solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                    <BtnGroupButton id={6} key={6} class="btn" solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                    <BtnGroupButton id={7} key={7} class="btn" solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                    <BtnGroupButton id={8} key={8} class="btn" solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}}/>
-                     */}
-                        
                     <br/>
                     <Button id="Exo2" value="VALIDER"/>
                 </div>
