@@ -2,8 +2,10 @@ import React, { useEffect } from 'react';
 import './App.css';
 import Logo from './../../assets/raw.jpg'
 import ImgSoluce from './../../assets/_1_1.jpg'
+import axios from 'axios';
 
 const NBRBUTTON = 12;
+const SOLUTION = "SQUALL";
 
 function DivLettre(props){
 
@@ -165,6 +167,22 @@ function ImgSolutions(props) {
 }
 
 function Images(props) {
+
+    const apiUrl = 'https://pixabay.com/api';
+    const apiKey = '14103325-b948c3fc34be7c939206bed1b';
+    const amount = 4;
+    const [images, setImages] = React.useState([]);
+
+    function LoadImages() {
+        axios
+        .get(`${apiUrl}/?key=${apiKey}&q=${
+            props.solution
+          }&per_page=${amount}&safesearch=true`
+          )
+          .then(res => setImages(res.data.hits))
+          .catch(err => console.log(err));
+    }
+
     return (
             <table>
                 <tbody>
@@ -277,13 +295,30 @@ function BtnGroupButton(props) {
     );
 }
 
+/// bouton de validation de réponse
 function Button(props) {
-    return (<button type="button" value="" id={props.id} className={props.class}>{props.value}</button>);
+    function handleClick(){
+        if(props.solution.length === props.essai){
+            console.log(props.positionTwo);
+            let a = '';
+            for (const keyTwo in props.positionTwo) {
+                if (Object.hasOwnProperty.call(props.positionTwo, keyTwo)) {
+                    const elementTwo = props.positionTwo[keyTwo];
+                    // console.log(elementTwo);
+                    a+=elementTwo.value;
+                    
+                }
+            }
+            console.log(a);
+        }
+    }
+
+    return (<button type="button" value="" id={props.id} onClick={handleClick}  className={props.class}>{props.value}</button>);
 }
 function App(){
 
     const [level, setLevel] = React.useState(1);
-    const [solution, setSolution] = React.useState("AMAS");
+    const [solution, setSolution] = React.useState(SOLUTION);
     
     // compteur qui va compter le nombre de lettre appuyée
     const [essai, setEssai] = React.useState(0);
@@ -299,13 +334,13 @@ function App(){
                 <div className="container">
                     <NavBar level={level}/>
                     <hr/>
-                    <Images/>
+                    <Images solution={solution} />
                     <hr/>
                     <DivLettre solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} positionTwo={positionTwo} setPositionTwo={(newPositionTwo)=>{setPositionTwo(newPositionTwo)}} />
                     <BtnLettre solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} positionTwo={positionTwo} setPositionTwo={(newPositionTwo)=>{setPositionTwo(newPositionTwo)}} />
 
                     <br/>
-                    <Button id="Exo2" value="VALIDER"/>
+                    <Button id="Exo2" solution={solution} essai={essai} positionTwo={positionTwo} value="VALIDER"/>
                 </div>
             </>
         );
