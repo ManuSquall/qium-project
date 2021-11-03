@@ -5,7 +5,8 @@ import ImgSoluce from './../../assets/_1_1.jpg'
 import axios from 'axios';
 
 const NBRBUTTON = 12;
-const SOLUTION = "SQUALL";
+const SOLUTION = ['FEU','GLACE','TERRE','EAU'];
+
 
 function DivLettre(props){
 
@@ -37,6 +38,8 @@ function NavBar(props) {
 
 function BtnLettre(props){
 
+    const [Shuffled, setShuffled] = React.useState();
+
     // function for random shuffling
     String.prototype.shuffle = function () {
         let a = this.split("");
@@ -50,6 +53,8 @@ function BtnLettre(props){
         }
         return a.join("");
     }
+
+    
 
     /*
     creates string by padding the answer string with
@@ -73,14 +78,41 @@ function BtnLettre(props){
         return s;
     }
 
-    let s = createstring(props.solution);
+    useEffect(()=> {
+        console.log("Shuffled has changed");
+        
 
-        return ( 
+     },[Shuffled]);
+
+    useEffect(()=> {
+        console.log("solution has changed");
+        setShuffled(props.solution);
+        console.log(props.solution);
+        console.log(s);
+
+     },[props.solution]);
+     
+     
+
+        
+
+    let s = createstring(props.level);
+    let itemList = Array.from(Array(NBRBUTTON)).map((item,i)=>{
+        return <BtnGroupButton id={i} key={i} value={s[i]} class="btn" solution={props.solution} setEssai={(newEssai)=>{props.setEssai(newEssai)}} essai={props.essai} position={props.position} setPosition={(newPosition)=>{props.setPosition(newPosition)}} positionTwo={props.positionTwo} setPositionTwo={(newPositionTwo)=>{props.setPositionTwo(newPositionTwo)}} />;
+
+     });
+
+        return (
+            <> 
+            <p>{s}</p>
             <div id="btnLettre">
-            {Array.from(Array(NBRBUTTON), (notUsed, i)=>{
+            {/* {Array.from(Array(NBRBUTTON), (notUsed, i)=>{
                 return <BtnGroupButton id={i} key={i} value={s[i]} class="btn" solution={props.solution} setEssai={(newEssai)=>{props.setEssai(newEssai)}} essai={props.essai} position={props.position} setPosition={(newPosition)=>{props.setPosition(newPosition)}} positionTwo={props.positionTwo} setPositionTwo={(newPositionTwo)=>{props.setPositionTwo(newPositionTwo)}} />;
-                })}
+                })} */}
+
+{itemList}
             </div>
+            </>
         );
 }
 
@@ -107,7 +139,7 @@ function BtnLettreButton(props) {
 
 
                 if(element.lettreId ===props.id){
-                    console.log("btn lettre useEffect start")
+                    // console.log("btn lettre useEffect start")
                     setValue(element.value);
                     setDisabledAttribute("");
 
@@ -119,15 +151,23 @@ function BtnLettreButton(props) {
                 }
             }
         }
+    }else{
+
+    // Dans le cas où un niveau est passé essai est de nouveau égal à 0: on remet les valeurs à "_"
+     if(props.essai === 0){
+         setValue("_");
+     }
+
     }
      },[props.essai]);
+
 
         
     function handleClick() {
         
 
         if(Object.keys(props.positionTwo).length === Object.keys(props.position).length){
-        console.log("btn lettre handleclik start");
+        // console.log("btn lettre handleclik start");
  
         //delete the specific character
         
@@ -208,13 +248,13 @@ function BtnGroupButton(props) {
     useEffect(()=> {
 
         if(Object.keys(props.positionTwo).length < Object.keys(props.position).length && (props.essai < Object.keys(props.position).length)){
-        console.log("btn group useEffect start");
-        console.log("essai change : " + props.essai);
-        console.log("\nposition : ");
-        console.log(props.position);
+        // console.log("btn group useEffect start");
+        // console.log("essai change : " + props.essai);
+        // console.log("\nposition : ");
+        // console.log(props.position);
         
-        console.log("\npositionTwo : ");
-        console.log(props.positionTwo);
+        // console.log("\npositionTwo : ");
+        // console.log(props.positionTwo);
 
 
         
@@ -266,7 +306,7 @@ function BtnGroupButton(props) {
     // une fois cliqué ajoute à position la key avec l'id btn blanc assigné
     function handleClick() {
         if(Object.keys(props.position).length < props.solution.length && props.essai === Object.keys(props.positionTwo).length){
-            console.log("btn group handleclik start");
+            // console.log("btn group handleclik start");
 
 
             // todo: loop trought essai and check button which contains "_" to replace it
@@ -299,7 +339,7 @@ function BtnGroupButton(props) {
 function Button(props) {
     function handleClick(){
         if(props.solution.length === props.essai){
-            console.log(props.positionTwo);
+            // console.log(props.positionTwo);
             let a = '';
             for (const keyTwo in props.positionTwo) {
                 if (Object.hasOwnProperty.call(props.positionTwo, keyTwo)) {
@@ -309,7 +349,9 @@ function Button(props) {
                     
                 }
             }
-            console.log(a);
+            if(props.solution===a){
+                props.setLevel(props.level + 1)
+            }
         }
     }
 
@@ -318,7 +360,7 @@ function Button(props) {
 function App(){
 
     const [level, setLevel] = React.useState(1);
-    const [solution, setSolution] = React.useState(SOLUTION);
+    const [solution, setSolution] = React.useState(SOLUTION[0]);
     
     // compteur qui va compter le nombre de lettre appuyée
     const [essai, setEssai] = React.useState(0);
@@ -328,6 +370,14 @@ function App(){
 
     // tableau des lettres noires qui a pour key les id lettres et value les btnid correspondant ainsi que les value blanc assignées
     const [positionTwo, setPositionTwo] = React.useState({});
+
+    const [, updateState] = React.useState();
+    const forceUpdate = React.useCallback(() => updateState({}), []);
+
+    useEffect(()=> {
+        setSolution(SOLUTION[(level-1)]);
+        setEssai(0);
+    },[level]);
     
         return (
             <>
@@ -340,7 +390,7 @@ function App(){
                     <BtnLettre solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} positionTwo={positionTwo} setPositionTwo={(newPositionTwo)=>{setPositionTwo(newPositionTwo)}} />
 
                     <br/>
-                    <Button id="Exo2" solution={solution} essai={essai} positionTwo={positionTwo} value="VALIDER"/>
+                    <Button id="Exo2" solution={solution} setSolution={(newSolution)=>{setSolution(newSolution)}} essai={essai} positionTwo={positionTwo} level={level} setLevel={(newLevel)=>{setLevel(newLevel)}} value="VALIDER"/>
                 </div>
             </>
         );
