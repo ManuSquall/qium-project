@@ -1,27 +1,26 @@
 import React, { useEffect } from 'react';
 import './App.css';
 import Logo from './../../assets/raw.jpg'
-import ImgSoluce from './../../assets/_1_1.jpg'
+import DefaultImg from './../../assets/_1_1.jpg'
 import axios from 'axios';
 
 const NBRBUTTON = 12;
 const SOLUTION = ['FEU','GLACE','TERRE','EAU'];
 
 
-function DivLettre(props){
+function DivSolution(props){
 
-    function displayButton(number){
+    function displaySolutionButton(number){
         return Array.from(Array(number), (notUsed, index) => {
-            return <BtnLettreButton id={index+1} key={index} class="lettre" solution={props.solution} setEssai={(newEssai)=>{props.setEssai(newEssai)}} essai={props.essai} position={props.position} setPosition={(newPosition)=>{props.setPosition(newPosition)}} positionTwo={props.positionTwo} setPositionTwo={(newPositionTwo)=>{props.setPositionTwo(newPositionTwo)}} />;
+            return <SolutionButton id={index+1} key={index} class="lettre" solution={props.solution} setEssai={(newEssai)=>{props.setEssai(newEssai)}} essai={props.essai} position={props.position} positionTwo={props.positionTwo} setPositionTwo={(newPositionTwo)=>{props.setPositionTwo(newPositionTwo)}} />;
         })
     }
 
         return (
         <div className="divLettre">
-            {displayButton(props.solution.length)}
+            {displaySolutionButton(props.solution.length)}
         </div>
     );
-    
 }
 
 function NavBar(props) {
@@ -36,57 +35,41 @@ function NavBar(props) {
     )
 }
 
-function BtnLettre(props){
+function DivShuffledWord(props){
 
-     
-
-     let itemList = Array.from(Array(NBRBUTTON)).map((item,i)=>{
-        return <BtnGroupButton key={props.shuffled + i} id={i}  value={props.shuffled[i]} class="btn" solution={props.solution} setEssai={(newEssai)=>{props.setEssai(newEssai)}} essai={props.essai} position={props.position} setPosition={(newPosition)=>{props.setPosition(newPosition)}} positionTwo={props.positionTwo} setPositionTwo={(newPositionTwo)=>{props.setPositionTwo(newPositionTwo)}} />;
+     let itemList = Array.from(Array(NBRBUTTON)).map((notUsed,i)=>{
+        return <ShuffledButton key={props.shuffled + i} id={i}  value={props.shuffledWord[i]} class="btn" solution={props.solution} setEssai={(newEssai)=>{props.setEssai(newEssai)}} essai={props.essai} position={props.position} setPosition={(newPosition)=>{props.setPosition(newPosition)}} positionTwo={props.positionTwo} />;
 
      });
     
-
         return (
             <> 
-            <p>{props.shuffled}</p>
-            <div id="btnLettre">
-            {/* {Array.from(Array(NBRBUTTON), (notUsed, i)=>{
-                return <BtnGroupButton id={i} key={i} value={s[i]} class="btn" solution={props.solution} setEssai={(newEssai)=>{props.setEssai(newEssai)}} essai={props.essai} position={props.position} setPosition={(newPosition)=>{props.setPosition(newPosition)}} positionTwo={props.positionTwo} setPositionTwo={(newPositionTwo)=>{props.setPositionTwo(newPositionTwo)}} />;
-                })} */}
-
-{itemList}
-            </div>
+                <div id="btnLettre">
+                    {itemList}
+                </div>
             </>
         );
     
 }
 
-function BtnLettreButton(props) {
-
+function SolutionButton(props) {
 
     const [value, setValue] = React.useState("_");
     const [disabledAttribute, setDisabledAttribute] = React.useState("disabled");
-
-    
-    
 
     // lorsque l'essai change quand un bouton blanc est appuyé
     // si la length du tableau est = au numéro de button et = à la longueur de l'essai
      useEffect(()=> {
         
-
         if(props.essai === Object.keys(props.position).length && Object.keys(props.positionTwo).length < Object.keys(props.position).length ){
         // find the white button associated with this lettre
         for (const key in props.position) {
             if (Object.hasOwnProperty.call(props.position, key)) {
                 const element = props.position[key];
-                ;
-
 
                 if(element.lettreId ===props.id){
                     setValue(element.value);
                     setDisabledAttribute("");
-
 
                     // on ajoute ensuite à positionTwo 
                     let b = props.positionTwo;
@@ -112,14 +95,11 @@ function BtnLettreButton(props) {
         
 
         if(Object.keys(props.positionTwo).length === Object.keys(props.position).length){
-        
- 
         //delete the specific character
         
         // loop position
         for (const key in props.positionTwo) {
             if (Object.hasOwnProperty.call(props.positionTwo, key)) {
-                const element = props.positionTwo[key];
 
                 // delete the corresponding lettre in essai
                 if(key===(props.id+"")){
@@ -129,8 +109,6 @@ function BtnLettreButton(props) {
                     delete props.positionTwo[(props.id+"")];
 
                     props.setEssai(props.essai-1);
-                    // console.log("Lettre à supprimé : "+ element.value+" idlettre : " + element.btnId);
-
                     break;
                 }
                 
@@ -144,7 +122,7 @@ function BtnLettreButton(props) {
     );
 }
 
-function ImgSolutions(props) {
+function ImgSolution(props) {
 
     // ! add the possibility to zoom an image
 
@@ -157,21 +135,20 @@ function Images(props) {
             <table>
                 <tbody>
                     <tr>
-                        <td><ImgSolutions id="1" ImgSoluce={(!props.images[0])?ImgSoluce:props.images[0].previewURL} /></td>
-                        <td><ImgSolutions id="2" ImgSoluce={(!props.images[1])?ImgSoluce:props.images[1].previewURL} /></td>
+                        <td><ImgSolution id="1" ImgSoluce={(!props.images[0])?DefaultImg:props.images[0].previewURL} /></td>
+                        <td><ImgSolution id="2" ImgSoluce={(!props.images[1])?DefaultImg:props.images[1].previewURL} /></td>
                     </tr>
                     <tr>
-                        <td><ImgSolutions id="3" ImgSoluce={(!props.images[2])?ImgSoluce:props.images[2].previewURL} /></td>
-                        <td><ImgSolutions id="4" ImgSoluce={(!props.images[3])?ImgSoluce:props.images[3].previewURL} /></td>
+                        <td><ImgSolution id="3" ImgSoluce={(!props.images[2])?DefaultImg:props.images[2].previewURL} /></td>
+                        <td><ImgSolution id="4" ImgSoluce={(!props.images[3])?DefaultImg:props.images[3].previewURL} /></td>
                     </tr>
                 </tbody>
             </table>
     );
 }
 
-function BtnGroupButton(props) {
+function ShuffledButton(props) {
 
-    const [value, setValue] = React.useState(props.value);
     const [disabledAttribute, setDisabledAttribute] = React.useState("");
 
 
@@ -191,7 +168,7 @@ function BtnGroupButton(props) {
                for (const keyTwo in props.positionTwo) {
                    if (Object.hasOwnProperty.call(props.positionTwo, keyTwo)) {
                        const elementTwo = props.positionTwo[keyTwo];
-                       if(elementTwo.btnId === (props.id+"") && elementTwo.value===value){
+                       if(elementTwo.btnId === (props.id+"") && elementTwo.value===props.value){
                         //    s'il est dans position on incrémente
                             aSupprimer= aSupprimer +1;
                        }
@@ -205,7 +182,7 @@ function BtnGroupButton(props) {
                    if (Object.hasOwnProperty.call(props.position, key)) {
                        const element = props.position[key];
 
-                       if((key === (props.id+"") && element.value===value)){
+                       if((key === (props.id+"") && element.value===props.value)){
                             cptPosition = 0;
                             break;
                         }else{
@@ -251,7 +228,7 @@ function BtnGroupButton(props) {
 
             setDisabledAttribute("disabled");
             let b = props.position;
-            b[(props.id)]={value: value, lettreId: a};
+            b[(props.id)]={value: props.value, lettreId: a};
             props.setPosition(b);
             // making this only to react in black button (lettre)
             props.setEssai((props.essai+1));
@@ -260,34 +237,14 @@ function BtnGroupButton(props) {
     }
 
     return (
-        <button type="button" value="" id={props.id+1} className={props.class} onClick={handleClick} disabled={disabledAttribute} >{value}</button>
+        <button type="button" value="" id={props.id+1} className={props.class} onClick={handleClick} disabled={disabledAttribute} >{props.value}</button>
     );
 }
 
-/// bouton de validation de réponse
-function Button(props) {
-    function handleClick(){
-        if(props.solution.length === props.essai){
-            // console.log(props.positionTwo);
-            let a = '';
-            for (const keyTwo in props.positionTwo) {
-                if (Object.hasOwnProperty.call(props.positionTwo, keyTwo)) {
-                    const elementTwo = props.positionTwo[keyTwo];
-                    // console.log(elementTwo);
-                    a+=elementTwo.value;
-                    
-                }
-            }
-            if(props.solution===a){
-                props.setLevel(props.level + 1)
-            }
-        }
-    }
 
-    return (<button type="button" value="" id={props.id} onClick={handleClick}  className={props.class}>{props.value}</button>);
-}
 function App(){
-
+   //////////////////////////////////////////////////////////////////////////////////
+    // Code from Stack Overflow to generate a shuffled string
     // function for random shuffling
     String.prototype.shuffle = function () {
         let a = this.split("");
@@ -324,7 +281,7 @@ function App(){
         
         return s;
     }
-    /////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////
 
     
      
@@ -334,7 +291,7 @@ function App(){
     const [solution, setSolution] = React.useState(SOLUTION[0]);
 
 
-    const [Shuffled, setShuffled] = React.useState(createstring(solution));
+    const [shuffledWord, setshuffledWord] = React.useState(createstring(solution));
     
     // compteur qui va compter le nombre de lettre appuyée
     const [essai, setEssai] = React.useState(0);
@@ -363,30 +320,44 @@ function App(){
     }
 
     useEffect(()=> {
-        console.log("level has changed");
         setSolution(SOLUTION[(level-1)]);
         setEssai(0);
         setPositionTwo({});
-        console.log(solution);
     },[level]);
 
     useEffect(()=> {        
-        setShuffled(createstring(solution));
+        setshuffledWord(createstring(solution));
         LoadImages();
     },[solution]);
+
+    useEffect(()=> {        
+        if(solution.length === essai){
+            let a = '';
+            for (const keyTwo in positionTwo) {
+                if (Object.hasOwnProperty.call(positionTwo, keyTwo)) {
+                    a+=positionTwo[keyTwo].value;
+                }
+            }
+            if(solution===a){
+                setTimeout(function(){ 
+                    alert("Bravo vous avez trouvé le mot!");
+                    setLevel(level + 1);
+                }, 500);
+            }
+        }
+    },[essai]);
     
         return (
             <>
                 <div className="container">
                     <NavBar level={level}/>
                     <hr/>
-                    <Images solution={solution} images={images} />
+                    <Images images={images} />
                     <hr/>
-                    <DivLettre solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} positionTwo={positionTwo} setPositionTwo={(newPositionTwo)=>{setPositionTwo(newPositionTwo)}} />
-                    <BtnLettre solution={solution} shuffled={Shuffled} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} positionTwo={positionTwo} setPositionTwo={(newPositionTwo)=>{setPositionTwo(newPositionTwo)}} />
-
+                    <DivSolution solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} positionTwo={positionTwo} setPositionTwo={(newPositionTwo)=>{setPositionTwo(newPositionTwo)}} />
                     <br/>
-                    <Button id="Exo2" solution={solution} setSolution={(newSolution)=>{setSolution(newSolution)}} essai={essai} positionTwo={positionTwo} level={level} setLevel={(newLevel)=>{setLevel(newLevel)}} value="VALIDER"/>
+                    <DivShuffledWord solution={solution} shuffledWord={shuffledWord} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} positionTwo={positionTwo} />
+                    <br/>
                 </div>
             </>
         );
