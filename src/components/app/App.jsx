@@ -27,7 +27,7 @@ function DivLettre(props){
 function NavBar(props) {
     return (
     <nav className="navigation-bar" >
-        <img className="logo" src={Logo} alt=""/>;
+        <img className="logo" src={Logo} alt=""/>
         <h3>Quatre Images Un Mot</h3>
         <div className="divNiveau" >
             <span className="niveau">{props.level}</span>
@@ -38,28 +38,10 @@ function NavBar(props) {
 
 function BtnLettre(props){
 
-
-    
-    
-
-    // useEffect(()=> {
-    //     console.log("Shuffled has changed 2");
-    //     console.log(Shuffled);
-        
-
-    //  },[Shuffled]);
-
-    useEffect(()=> {
-        console.log("solution has changed");
-        console.log(props.solution);
-        console.log(props.shuffled);
-
-     },[props.solution]);
-     
      
 
      let itemList = Array.from(Array(NBRBUTTON)).map((item,i)=>{
-        return <BtnGroupButton key={props.solution + i} id={i}  value={props.shuffled[i]} class="btn" solution={props.solution} setEssai={(newEssai)=>{props.setEssai(newEssai)}} essai={props.essai} position={props.position} setPosition={(newPosition)=>{props.setPosition(newPosition)}} positionTwo={props.positionTwo} setPositionTwo={(newPositionTwo)=>{props.setPositionTwo(newPositionTwo)}} />;
+        return <BtnGroupButton key={props.shuffled + i} id={i}  value={props.shuffled[i]} class="btn" solution={props.solution} setEssai={(newEssai)=>{props.setEssai(newEssai)}} essai={props.essai} position={props.position} setPosition={(newPosition)=>{props.setPosition(newPosition)}} positionTwo={props.positionTwo} setPositionTwo={(newPositionTwo)=>{props.setPositionTwo(newPositionTwo)}} />;
 
      });
     
@@ -115,9 +97,10 @@ function BtnLettreButton(props) {
         }
     }else{
 
-    // Dans le cas où un niveau est passé essai est de nouveau égal à 0: on remet les valeurs à "_"
+    // Dans le cas où un niveau est passé essai est de nouveau égal à 0: on remet les valeurs à "_" et on désactive les boutons précédemment activé
      if(props.essai === 0){
          setValue("_");
+         setDisabledAttribute("disabled");
      }
 
     }
@@ -170,31 +153,16 @@ function ImgSolutions(props) {
 
 function Images(props) {
 
-    const apiUrl = 'https://pixabay.com/api';
-    const apiKey = '14103325-b948c3fc34be7c939206bed1b';
-    const amount = 4;
-    const [images, setImages] = React.useState([]);
-
-    function LoadImages() {
-        axios
-        .get(`${apiUrl}/?key=${apiKey}&q=${
-            props.solution
-          }&per_page=${amount}&safesearch=true`
-          )
-          .then(res => setImages(res.data.hits))
-          .catch(err => console.log(err));
-    }
-
     return (
             <table>
                 <tbody>
                     <tr>
-                        <td><ImgSolutions id="1" ImgSoluce={ImgSoluce} /></td>
-                        <td><ImgSolutions id="2" ImgSoluce={ImgSoluce} /></td>
+                        <td><ImgSolutions id="1" ImgSoluce={(!props.images[0])?ImgSoluce:props.images[0].previewURL} /></td>
+                        <td><ImgSolutions id="2" ImgSoluce={(!props.images[1])?ImgSoluce:props.images[1].previewURL} /></td>
                     </tr>
                     <tr>
-                        <td><ImgSolutions id="3" ImgSoluce={ImgSoluce} /></td>
-                        <td><ImgSolutions id="4" ImgSoluce={ImgSoluce} /></td>
+                        <td><ImgSolutions id="3" ImgSoluce={(!props.images[2])?ImgSoluce:props.images[2].previewURL} /></td>
+                        <td><ImgSolutions id="4" ImgSoluce={(!props.images[3])?ImgSoluce:props.images[3].previewURL} /></td>
                     </tr>
                 </tbody>
             </table>
@@ -262,6 +230,10 @@ function BtnGroupButton(props) {
     
     // une fois cliqué ajoute à position la key avec l'id btn blanc assigné
     function handleClick() {
+        if(props.essai ===0){
+            console.log(props.positionTwo);
+            console.log(Object.keys(props.positionTwo).length);
+        }
         if(Object.keys(props.position).length < props.solution.length && props.essai === Object.keys(props.positionTwo).length){
             // console.log("btn group handleclik start");
 
@@ -374,24 +346,41 @@ function App(){
     const [positionTwo, setPositionTwo] = React.useState({});
 
 
-    
 
+    const apiUrl = 'https://pixabay.com/api';
+    const apiKey = '14103325-b948c3fc34be7c939206bed1b';
+    const amount = 4;
+    const [images, setImages] = React.useState([]);
 
-    // const [, updateState] = React.useState();
-    // const forceUpdate = React.useCallback(() => updateState({}), []);
+    function LoadImages() {
+        axios
+        .get(`${apiUrl}/?key=${apiKey}&q=${
+            solution
+          }&per_page=${amount}&safesearch=true`
+          )
+          .then(res => setImages(res.data.hits))
+          .catch(err => console.log(err));
+    }
 
     useEffect(()=> {
+        console.log("level has changed");
         setSolution(SOLUTION[(level-1)]);
         setEssai(0);
-        setShuffled(createstring(solution));
+        setPositionTwo({});
+        console.log(solution);
     },[level]);
+
+    useEffect(()=> {        
+        setShuffled(createstring(solution));
+        LoadImages();
+    },[solution]);
     
         return (
             <>
                 <div className="container">
                     <NavBar level={level}/>
                     <hr/>
-                    <Images solution={solution} />
+                    <Images solution={solution} images={images} />
                     <hr/>
                     <DivLettre solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} positionTwo={positionTwo} setPositionTwo={(newPositionTwo)=>{setPositionTwo(newPositionTwo)}} />
                     <BtnLettre solution={solution} shuffled={Shuffled} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} positionTwo={positionTwo} setPositionTwo={(newPositionTwo)=>{setPositionTwo(newPositionTwo)}} />

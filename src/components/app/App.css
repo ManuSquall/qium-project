@@ -46,6 +46,8 @@ border-radius: 20%;
 border: 0px solid grey;
 text-align: center;
 background-color: white;
+height: 140px;
+width: 140px;
 }
 div table tr td{
 width: 175px; 
