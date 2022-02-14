@@ -38,73 +38,35 @@ function NavBar(props) {
 
 function BtnLettre(props){
 
-    const [Shuffled, setShuffled] = React.useState();
-
-    // function for random shuffling
-    String.prototype.shuffle = function () {
-        let a = this.split("");
-        let n = a.length;
-    
-        for(let i = n - 1; i > 0; i--) {
-            let j = Math.floor(Math.random() * (i + 1));
-            let tmp = a[i];
-            a[i] = a[j];
-            a[j] = tmp;
-        }
-        return a.join("");
-    }
 
     
+    
 
-    /*
-    creates string by padding the answer string with
-    random letter that are not already in the answer
-    string. Then returns the shuffled string in the end.
-    */
-    function createstring(level) {
-        let answer = props.solution;
-        let numberremaining = NBRBUTTON - answer.length;
-        let s = answer;
-        let ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        let possible = "";
-        for (let i = 0; i < ALPHABET.length; ++i) {
-            if (answer.indexOf(ALPHABET[i]) === -1)
-                possible += ALPHABET[i];
-        }
-        possible = possible.shuffle();
-        for (let i = 0; i < numberremaining; ++i)
-            s += possible[i];
-        s = s.shuffle();
-        return s;
-    }
-
-    useEffect(()=> {
-        console.log("Shuffled has changed");
+    // useEffect(()=> {
+    //     console.log("Shuffled has changed 2");
+    //     console.log(Shuffled);
         
 
-     },[Shuffled]);
+    //  },[Shuffled]);
 
     useEffect(()=> {
         console.log("solution has changed");
-        setShuffled(props.solution);
         console.log(props.solution);
-        console.log(s);
+        console.log(props.shuffled);
 
      },[props.solution]);
      
      
 
-        
-
-    let s = createstring(props.level);
-    let itemList = Array.from(Array(NBRBUTTON)).map((item,i)=>{
-        return <BtnGroupButton id={i} key={i} value={s[i]} class="btn" solution={props.solution} setEssai={(newEssai)=>{props.setEssai(newEssai)}} essai={props.essai} position={props.position} setPosition={(newPosition)=>{props.setPosition(newPosition)}} positionTwo={props.positionTwo} setPositionTwo={(newPositionTwo)=>{props.setPositionTwo(newPositionTwo)}} />;
+     let itemList = Array.from(Array(NBRBUTTON)).map((item,i)=>{
+        return <BtnGroupButton key={props.solution + i} id={i}  value={props.shuffled[i]} class="btn" solution={props.solution} setEssai={(newEssai)=>{props.setEssai(newEssai)}} essai={props.essai} position={props.position} setPosition={(newPosition)=>{props.setPosition(newPosition)}} positionTwo={props.positionTwo} setPositionTwo={(newPositionTwo)=>{props.setPositionTwo(newPositionTwo)}} />;
 
      });
+    
 
         return (
             <> 
-            <p>{s}</p>
+            <p>{props.shuffled}</p>
             <div id="btnLettre">
             {/* {Array.from(Array(NBRBUTTON), (notUsed, i)=>{
                 return <BtnGroupButton id={i} key={i} value={s[i]} class="btn" solution={props.solution} setEssai={(newEssai)=>{props.setEssai(newEssai)}} essai={props.essai} position={props.position} setPosition={(newPosition)=>{props.setPosition(newPosition)}} positionTwo={props.positionTwo} setPositionTwo={(newPositionTwo)=>{props.setPositionTwo(newPositionTwo)}} />;
@@ -114,6 +76,7 @@ function BtnLettre(props){
             </div>
             </>
         );
+    
 }
 
 function BtnLettreButton(props) {
@@ -139,7 +102,6 @@ function BtnLettreButton(props) {
 
 
                 if(element.lettreId ===props.id){
-                    // console.log("btn lettre useEffect start")
                     setValue(element.value);
                     setDisabledAttribute("");
 
@@ -167,7 +129,7 @@ function BtnLettreButton(props) {
         
 
         if(Object.keys(props.positionTwo).length === Object.keys(props.position).length){
-        // console.log("btn lettre handleclik start");
+        
  
         //delete the specific character
         
@@ -184,7 +146,7 @@ function BtnLettreButton(props) {
                     delete props.positionTwo[(props.id+"")];
 
                     props.setEssai(props.essai-1);
-                    console.log("Lettre à supprimé : "+ element.value+" idlettre : " + element.btnId);
+                    // console.log("Lettre à supprimé : "+ element.value+" idlettre : " + element.btnId);
 
                     break;
                 }
@@ -244,20 +206,15 @@ function BtnGroupButton(props) {
     const [value, setValue] = React.useState(props.value);
     const [disabledAttribute, setDisabledAttribute] = React.useState("");
 
+
+
+    
+
     // event quand une lettre noire est cliquée (on l'a déjà supprimé de essai) on sélectionne le blanc qui convient pour le réactiver (et delete au niveau de position)
     useEffect(()=> {
 
         if(Object.keys(props.positionTwo).length < Object.keys(props.position).length && (props.essai < Object.keys(props.position).length)){
-        // console.log("btn group useEffect start");
-        // console.log("essai change : " + props.essai);
-        // console.log("\nposition : ");
-        // console.log(props.position);
-        
-        // console.log("\npositionTwo : ");
-        // console.log(props.positionTwo);
 
-
-        
                 
                let aSupprimer = 0;
                let cptPosition = 0;
@@ -359,8 +316,53 @@ function Button(props) {
 }
 function App(){
 
+    // function for random shuffling
+    String.prototype.shuffle = function () {
+        let a = this.split("");
+        let n = a.length;
+    
+        for(let i = n - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            let tmp = a[i];
+            a[i] = a[j];
+            a[j] = tmp;
+        }
+        return a.join("");
+    }
+    /*
+    creates string by padding the answer string with
+    random letter that are not already in the answer
+    string. Then returns the shuffled string in the end.
+    */
+    function createstring(solution) {
+        
+        let answer = solution;
+        let numberremaining = NBRBUTTON - answer.length;
+        let s = answer;
+        let ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        let possible = "";
+        for (let i = 0; i < ALPHABET.length; ++i) {
+            if (answer.indexOf(ALPHABET[i]) === -1)
+                possible += ALPHABET[i];
+        }
+        possible = possible.shuffle();
+        for (let i = 0; i < numberremaining; ++i)
+            s += possible[i];
+        s = s.shuffle();
+        
+        return s;
+    }
+    /////////////////////////////////////////
+
+    
+     
+
+
     const [level, setLevel] = React.useState(1);
     const [solution, setSolution] = React.useState(SOLUTION[0]);
+
+
+    const [Shuffled, setShuffled] = React.useState(createstring(solution));
     
     // compteur qui va compter le nombre de lettre appuyée
     const [essai, setEssai] = React.useState(0);
@@ -371,12 +373,17 @@ function App(){
     // tableau des lettres noires qui a pour key les id lettres et value les btnid correspondant ainsi que les value blanc assignées
     const [positionTwo, setPositionTwo] = React.useState({});
 
-    const [, updateState] = React.useState();
-    const forceUpdate = React.useCallback(() => updateState({}), []);
+
+    
+
+
+    // const [, updateState] = React.useState();
+    // const forceUpdate = React.useCallback(() => updateState({}), []);
 
     useEffect(()=> {
         setSolution(SOLUTION[(level-1)]);
         setEssai(0);
+        setShuffled(createstring(solution));
     },[level]);
     
         return (
@@ -387,7 +394,7 @@ function App(){
                     <Images solution={solution} />
                     <hr/>
                     <DivLettre solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} positionTwo={positionTwo} setPositionTwo={(newPositionTwo)=>{setPositionTwo(newPositionTwo)}} />
-                    <BtnLettre solution={solution} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} positionTwo={positionTwo} setPositionTwo={(newPositionTwo)=>{setPositionTwo(newPositionTwo)}} />
+                    <BtnLettre solution={solution} shuffled={Shuffled} setEssai={(newEssai)=>{setEssai(newEssai)}} essai={essai} position={position} setPosition={(newPosition)=>{setPosition(newPosition)}} positionTwo={positionTwo} setPositionTwo={(newPositionTwo)=>{setPositionTwo(newPositionTwo)}} />
 
                     <br/>
                     <Button id="Exo2" solution={solution} setSolution={(newSolution)=>{setSolution(newSolution)}} essai={essai} positionTwo={positionTwo} level={level} setLevel={(newLevel)=>{setLevel(newLevel)}} value="VALIDER"/>
