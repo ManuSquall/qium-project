@@ -1,4 +1,5 @@
 <!-- Repository git : https://github.com/ManuSquall/QIUM-project -->
+<<<<<<< HEAD
 # Quatre Images Un Mot project
 
 <!-- Description -->
@@ -8,6 +9,28 @@ This is the 4 pics 1 word game coded entirely in js with node.js technology and 
 
 ## Context
 <!-- Why am i making this -->
+=======
+# Quatre Images Un Mot project (version React)
+
+<!-- Description -->
+![output1](/readme/output1.png)
+
+
+<!-- ## Context -->
+<!-- Why am i making this -->
+
+## Tools used
+<!-- Packages, external librairies, IDE, utilitaries used -->
+* [VS Code](https://code.visualstudio.com/)
+
+## Prerequisites
+
+> Node version 14.15.1
+
+## How does it work
+<!-- What we have to do to make it work/run -->
+In the project directory, you can run:
+>>>>>>> react
 
 ## Tools used
 <!-- Packages, external librairies, IDE, utilitaries used -->
@@ -34,9 +57,15 @@ This is the 4 pics 1 word game coded entirely in js with node.js technology and 
 
 ![output3](/readme/output3.png)
 
+<<<<<<< HEAD
 ![output4](/readme/output4.png)
 
 ![output5](/readme/output5.png)
+=======
+<!-- ## Output: -->
+
+<!-- What the result is supposed to be -->
+>>>>>>> react
 
 
 ## About Authors / Contributors
@@ -52,8 +81,11 @@ This project is licensed under the [CC0 1.0 Universal](https://creativecommons.o
 
 <!-- inspiration, research stuff -->
 * https://nodejs.org/en/
+<<<<<<< HEAD
 * https://expressjs.com/fr/
 *
+=======
+>>>>>>> react
 
 
 # Made with purple 💜 lust :-)
