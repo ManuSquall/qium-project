@@ -305,7 +305,7 @@ function App(){
 
 
     const apiUrl = 'https://pixabay.com/api';
-    const apiKey = '14103325-b948c3fc34be7c939206bed1b';
+    const apiKey = process.env.REACT_APP_PIXABAY_API_KEY;
     const amount = 4;
     const [images, setImages] = React.useState([]);
 
