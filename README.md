@@ -20,6 +20,12 @@
 <!-- What we have to do to make it work/run -->
 In the project directory, you can run:
 
+### `npm install or yarn install`
+
+Make sure to have an [Pixabay api Key](https://youtu.be/6X1l_J-8QOE) then save it in a `.env` file at the project root:
+![output2](/readme/output2.png)
+
+
 ### `yarn start`
 
 Runs the app in the development mode.\
