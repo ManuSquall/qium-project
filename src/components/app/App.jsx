@@ -1,37 +1,15 @@
 import React, { useEffect } from 'react';
 import './App.css';
-import Logo from './../../assets/raw.jpg'
 import axios from 'axios';
 
 // custom components
-import Images from '../images';
-import DivSolution from '../DivSolution';
-import DivShuffledWord from '../DivShuffledWord';
+import NavBar from './components/NavBar/NavBar';
+import Images from './components/Images/Images';
+import DivSolution from './components/DivSolution/DivSolution';
+import DivShuffledWord from './components/DivShuffledWord/DivShuffledWord';
 
 const NBRBUTTON = 12;
 const SOLUTION = ['FEU','GLACE','TERRE','EAU'];
-
-
-
-/**
- * NavBar displaying title and current level
- * @param {*} props 
- * @returns 
- */
-function NavBar(props) {
-    return (
-    <nav className="navigation-bar" >
-        <img className="logo" src={Logo} alt=""/>
-        <h3>Quatre Images Un Mot</h3>
-        <div className="divNiveau" >
-            <span className="niveau">{props.level}</span>
-        </div>
-    </nav>
-    )
-}
-
-
-
 
 function App(){
    //////////////////////////////////////////////////////////////////////////////////
@@ -74,10 +52,6 @@ function App(){
     }
     //////////////////////////////////////////////////////////////////////////////////
 
-    
-     
-
-
     const [level, setLevel] = React.useState(1);
     const [solution, setSolution] = React.useState(SOLUTION[0]);
 
@@ -92,7 +66,6 @@ function App(){
 
     // tableau des lettres noires qui a pour key les id lettres et value les btnid correspondant ainsi que les value blanc assignées
     const [positionTwo, setPositionTwo] = React.useState({});
-
 
 
     const apiUrl = 'https://pixabay.com/api';
@@ -155,7 +128,6 @@ function App(){
                 </div>
             </>
         );
-    
 }
 
 export default App;

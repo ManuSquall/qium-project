@@ -1,4 +1,4 @@
-import DefaultImg from './../assets/_1_1.jpg'
+import DefaultImg from './../../../../assets/_1_1.jpg'
 /**
  * Solution image illustration
  * @param {*} props 
