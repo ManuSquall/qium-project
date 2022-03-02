@@ -74,16 +74,20 @@ function App(){
     const [images, setImages] = React.useState([]);
 
     function LoadImages() {
+        // axios
+        // .get(`${apiUrl}/?key=${apiKey}&q=${
+        //     solution
+        //   }&per_page=${amount}&safesearch=true`
+        //   )
+        //   .then(res => setImages(res.data.hits))
+        //   .catch(err => {
+        //       console.log(apiKey);
+        //       console.log(err);
+        //     });
+            
         axios
-        .get(`${apiUrl}/?key=${apiKey}&q=${
-            solution
-          }&per_page=${amount}&safesearch=true`
+        .get(`/api/GetImages`
           )
-          .then(res => setImages(res.data.hits))
-          .catch(err => {
-              console.log(apiKey);
-              console.log(err);
-            });
     }
 
     useEffect(()=> {
