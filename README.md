@@ -2,6 +2,8 @@
 # Quatre Images Un Mot project (version React)
 
 <!-- Description -->
+[You can check the live here](https://orange-meadow-0d1aa4b03.1.azurestaticapps.net/)
+
 ![output1](/readme/output1.png)
 
 
