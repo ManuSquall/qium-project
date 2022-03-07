@@ -22,13 +22,13 @@
 <!-- What we have to do to make it work/run -->
 In the project directory, you can run:
 
-### `npm install or yarn install`
+### `npm install` or `yarn install`
 
 Make sure to have an [Pixabay api Key](https://youtu.be/6X1l_J-8QOE) then save it in a `.env` file at the project root:
 ![output2](/readme/output2.png)
 
 
-### `yarn start`
+### `npm start` or `yarn start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -36,12 +36,12 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `yarn test`
+### `npm test` or `yarn test`
 
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
+### `npm run build` or `yarn build`
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
