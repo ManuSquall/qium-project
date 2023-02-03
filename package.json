@@ -4,6 +4,10 @@
   "description": "Quatre Image Un Mot",
   "main": "app.js",
   "scripts": {
+    "dev": "webpack --config=Scripts/config/webpack.dev.js --watch",
+    "build": "npm build",
+    "run":"node ./app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "squall",
   "license": "ISC",
